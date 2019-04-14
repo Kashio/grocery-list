@@ -1,0 +1,4 @@
+export default {
+    SET_USERNAME: 'SET_USERNAME',
+    SET_PASSWORD: 'SET_PASSWORD'
+};

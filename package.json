@@ -4,6 +4,9 @@
   "description": "Web application for handling user grocery list",
   "main": "index.js",
   "scripts": {
+    "serve:dev": "webpack-dev-server --config client/webpack.config.js",
+    "serve:prod": "webpack --cofnig client/webpack.config.js && node client/server.js",
+    "start": "npm run serve:dev",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -26,7 +29,9 @@
     "mongoose": "^5.5.1",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
-    "react-router": "^5.0.0"
+    "react-router": "^5.0.0",
+    "react-router-dom": "^5.0.0",
+    "use-react-router": "^1.0.5"
   },
   "devDependencies": {
     "@babel/core": "^7.4.3",
