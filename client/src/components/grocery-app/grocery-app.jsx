@@ -9,6 +9,7 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+import {toast} from 'react-toastify';
 import GroceryApi from '../../api/grocery';
 import Status from '../../api/status';
 
@@ -33,25 +34,34 @@ const GroceryApp = () => {
                 }
             })
             .catch(error => {
-                // TODO: use toast to notify on error here
+                toast.error('failed to load your grocery list:\n' + error, {
+                    position: toast.POSITION.BOTTOM_LEFT
+                });
                 console.error(error);
             });
     }, [user.username]);
 
     const add = () => {
-        GroceryApi
-            .add(groceryNameRef.current.value, user.username)
-            .then(result => {
-                if (result.status === Status.SUCCESS) {
-                    dispatch({type: types.ADD, payload: {grocery: result.grocery}});
-                } else {
-                    throw result.message;
-                }
-            })
-            .catch(error => {
-                // TODO: use toast to notify on error here
-                console.error(error);
-            });
+        if (groceryNameRef.current.value !== '') {
+            GroceryApi
+                .add(groceryNameRef.current.value, user.username)
+                .then(result => {
+                    if (result.status === Status.SUCCESS) {
+                        dispatch({type: types.ADD, payload: {grocery: result.grocery}});
+                        toast.success(groceryNameRef.current.value + ' added to your grocery list!', {
+                            position: toast.POSITION.BOTTOM_LEFT
+                        });
+                    } else {
+                        throw result.message;
+                    }
+                })
+                .catch(error => {
+                    toast.error('failed to add ' + groceryNameRef.current.value + ' to your grocery list:\n' + error, {
+                        position: toast.POSITION.BOTTOM_LEFT
+                    });
+                    console.error(error);
+                });
+        }
     };
 
     const filter = e => {

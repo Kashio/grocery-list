@@ -5,9 +5,11 @@ import UserContext from './user.context';
 import Grid from '@material-ui/core/Grid';
 import Login from '@/login/login';
 import GroceryApp from '@/grocery-app/grocery-app';
+import {ToastContainer} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const INITIAL_USER_STATE = {
-  username: null
+    username: null
 };
 
 const App = () => {
@@ -27,6 +29,7 @@ const App = () => {
                         <Route path="/groceries" component={GroceryApp}/>
                     </Switch>
                 </Grid>
+                <ToastContainer/>
             </UserContext.Provider>UserContext.Provider>
         </div>
     );
