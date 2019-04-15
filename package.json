@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "serve:dev": "webpack-dev-server --config client/webpack.config.js",
-    "serve:prod": "webpack --cofnig client/webpack.config.js && node client/server.js",
-    "start": "concurrently \"npm:serve:dev\" \"node server/bin/www\"",
+    "serve:prod": "webpack --config client/webpack.config.js && node client/server.js",
+    "start": "concurrently \"npm:serve:prod\" \"node server/bin/www\"",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

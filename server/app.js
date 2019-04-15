@@ -9,7 +9,7 @@ const app = express();
 app.use(protobufParser);
 app.use(cookieParser());
 app.use(cors({
-    origin: 'http://localhost:3000', // TODO: should be ENV variable of client-side variable...
+    origin: process.env.NODE_ENV === 'dev' ? 'http://localhost:3000' : 'http://192.168.99.100:3000', // TODO: should be ENV variable...
     credentials: true,
     optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
 }));

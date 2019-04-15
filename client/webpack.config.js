@@ -59,14 +59,14 @@ module.exports = {
         }),
         new webpack.HotModuleReplacementPlugin({}),
         new webpack.DefinePlugin({
-            API_URL: process.env.NODE_ENV === 'dev' ? "'http://localhost:8080/'" : "'http://localhost:8080/'"
+            API_URL: process.env.NODE_ENV === 'dev' ? "'http://localhost:8080/'" : "'http://192.168.99.100:8080/'"
         }),
         new MiniCssExtractPlugin({
             filename: "[name].css",
             chunkFilename: "[id].css"
         })
     ],
-    devtool: 'source-map-inline',
+    devtool: process.env.NODE_ENV === 'dev' ? 'inline-source-map' : false,
     context: path.resolve(__dirname, 'src'),
     output: {
         path: path.resolve(__dirname, 'dist'),
