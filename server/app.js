@@ -18,6 +18,7 @@ app.use('/user', require('./routes/user'));
 
 const authentication = require('./middlewares/authentication');
 
+app.use('/auth', authentication, require('./routes/auth'));
 app.use('/grocery', authentication, require('./routes/grocery'));
 
 // Catch 404 and forward to error handler

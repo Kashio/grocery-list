@@ -1,0 +1,8 @@
+syntax = "proto3";
+package grocery.api.response.auth;
+import "../status.proto";
+
+message AuthResponse {
+    Status status = 1;
+    string username = 2;
+}

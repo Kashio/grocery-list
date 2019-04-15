@@ -1,7 +1,9 @@
 import React, {useContext, useReducer, useRef, useEffect} from 'react';
 import './grocery-app.scss';
+import {Redirect} from 'react-router';
 import reducer from '../../reducers/groceries';
 import types from '../../actions/groceries';
+import useAuth from '../../hooks/useAuth';
 import UserContext from '@/app/user.context';
 import GroceryContext from './grocery-app.context';
 import GroceryList from '@/grocery-list/grocery-list';
@@ -20,6 +22,7 @@ const INITIAL_STATE = {
 
 const GroceryApp = () => {
     const [user, setUser] = useContext(UserContext);
+    const redirect = useAuth(setUser);
     const [groceries, dispatch] = useReducer(reducer, INITIAL_STATE);
     const groceryNameRef = useRef();
 
@@ -72,6 +75,9 @@ const GroceryApp = () => {
         return groceries.items.filter(grocery => grocery.name.includes(groceries.filter));
     };
 
+    if (redirect) {
+        return <Redirect to="/"/>;
+    }
     return (
         <GroceryContext.Provider value={dispatch}>
             <Grid container

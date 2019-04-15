@@ -39,17 +39,29 @@ protobuf.load('./protos/grocery/api/response/grocery-delete.proto')
     });
 
 const list = username => {
-    return axios.get(config.api.url + resource, {
-        responseType: 'arraybuffer',
-        withCredentials: true,
-        params: {
-            username
-        }
-    })
-        .then(response => {
-            // TODO: unwrap response.data from, Uint8Array - protobuf.BufferReader is not used bug ? https://github.com/protobufjs/protobuf.js/issues/986
-            return GroceryListResponseMessage.decode(new Uint8Array(response.data));
-        });
+    return new Promise((resolve, reject) => {
+        const waitForGroceryListResponseMessageAndFireList = () => {
+            if (!GroceryListResponseMessage) {
+                setTimeout(waitForGroceryListResponseMessageAndFireList, 1000);
+            } else {
+                axios.get(config.api.url + resource, {
+                    responseType: 'arraybuffer',
+                    withCredentials: true,
+                    params: {
+                        username
+                    }
+                })
+                    .then(response => {
+                        // TODO: unwrap response.data from, Uint8Array - protobuf.BufferReader is not used bug ? https://github.com/protobufjs/protobuf.js/issues/986
+                        resolve(GroceryListResponseMessage.decode(new Uint8Array(response.data)));
+                    })
+                    .catch(error => {
+                        reject(error);
+                    });
+            }
+        };
+        waitForGroceryListResponseMessageAndFireList();
+    });
 };
 
 const add = (name, username) => {
