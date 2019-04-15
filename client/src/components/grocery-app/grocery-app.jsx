@@ -109,7 +109,7 @@ const GroceryApp = () => {
                     spacing={8}
                     align="center"
                     justify="center">
-                    <Grid item>
+                    <Grid item xs={12}>
                         <TextField
                             className="filter-grocery-name"
                             type="text"
@@ -119,7 +119,7 @@ const GroceryApp = () => {
                     </Grid>
                 </Grid>
                 <Grid container spacing={8} alignItems="flex-end">
-                    <Grid item xs={12}>
+                    <Grid item>
                         <Button
                             variant="contained"
                             className="add-button"
