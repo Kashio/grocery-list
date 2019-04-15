@@ -32,15 +32,13 @@ UserSchema.pre('save', function (next) {
     next();
 });
 
-UserSchema.methods.checkPassword = password => {
+UserSchema.methods.checkPassword = function(password) {
     return new Promise((resolve, reject) => {
-        bcrypt.compare(password, this.password, (error, same) => {
-            if (error) {
-                reject(error);
-            } else {
-                resolve(same);
-            }
-        });
+        if(bcrypt.compareSync(password, this._doc.password)) {
+            resolve(true)
+        } else {
+            resolve(false);
+        }
     });
 };
 
@@ -73,7 +71,7 @@ UserSchema.statics.login = ({username, password}) => {
                     .then(same => {
                         if (same) {
                             return User.findOneAndUpdate({_id: user._doc._id}, {$set: {logged: true}})
-                                .then(() => {
+                                .then(result => {
                                     return result._doc;
                                 });
                         } else {

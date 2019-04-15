@@ -2,12 +2,7 @@ const jwt = require('jsonwebtoken');
 const config = require('../config');
 
 const authentication = (req, res, next) => {
-    const token =
-        req.body.token ||
-        req.query.token ||
-        req.headers['x-access-token'] ||
-        req.cookies.token;
-
+    const token = req.cookies.token;
     if (!token) {
         res.status(401).send('Unauthorized: No token provided');
     } else {

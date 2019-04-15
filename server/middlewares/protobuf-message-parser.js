@@ -12,10 +12,14 @@ module.exports = name => {
             process.exit(1);
         });
     return (req, res, next) => {
-        req[name] = Message.decode(req.raw);
-        const error = Message.verify(req[name]);
-        if (error) {
-            res.status(500).send(`Invalid ${name} payload`);
+        if (req.method !== 'GET') {
+            req[name] = Message.decode(req.raw);
+            const error = Message.verify(req[name]);
+            if (error) {
+                res.status(500).send(`Invalid ${name} payload`);
+            } else {
+                next();
+            }
         } else {
             next();
         }

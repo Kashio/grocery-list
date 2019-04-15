@@ -8,7 +8,11 @@ const app = express();
 
 app.use(protobufParser);
 app.use(cookieParser());
-app.use(cors());
+app.use(cors({
+    origin: 'http://localhost:3000', // TODO: should be ENV variable of client-side variable...
+    credentials: true,
+    optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+}));
 
 app.use('/user', require('./routes/user'));
 

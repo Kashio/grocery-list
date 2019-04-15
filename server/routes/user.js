@@ -49,12 +49,13 @@ router.post('/register', (req, res) => {
 router.post('/login', (req, res) => {
     User.login(req.user)
         .then(result => {
-            const token = jwt.sign(result.username, config.token.secret, {
-                expiresIn: config.token.expiration
+            const token = jwt.sign({username: result.username}, config.token.secret, {
+                expiresIn: config.token.expiration / 1000 / 60 / 60 + 'h'
             });
-            const message = LoginResponseMessage.create({status: 1, token: result});
+            const message = LoginResponseMessage.create({status: 1});
             res.setHeader("Content-Type", "application/octet-stream");
-            res.write(LoginResponseMessage.encode(message).finish()).cookie('token', token, { httpOnly: true });
+            res.cookie('token', token, { maxAge: config.token.expiration, httpOnly: true });
+            res.write(LoginResponseMessage.encode(message).finish());
             res.end();
         })
         .catch(error => {

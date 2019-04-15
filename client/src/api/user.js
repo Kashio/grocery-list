@@ -65,7 +65,8 @@ const login = (username, password) => {
                 responseType: 'arraybuffer',
                 headers: {
                     'Content-Type': 'application/octet-stream'
-                }
+                },
+                withCredentials: true
             })
                 .then(response => {
                     // TODO: unwrap response.data from, Uint8Array - protobuf.BufferReader is not used bug ? https://github.com/protobufjs/protobuf.js/issues/986

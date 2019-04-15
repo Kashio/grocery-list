@@ -1,5 +1,6 @@
-import React, {useState, useRef, useEffect} from 'react';
+import React, {useContext, useState, useRef, useEffect, useCallback} from 'react';
 import './login.scss';
+import UserContext from '@/app/user.context';
 import useReactRouter from 'use-react-router';
 import Grid from '@material-ui/core/Grid';
 import AccountCircle from '@material-ui/icons/AccountCircle';
@@ -12,8 +13,10 @@ import Status from '../../api/status';
 const INITIAL_REDIRECT_COUNTER = 6;
 
 const Login = () => {
+    const [user, setUser] = useContext(UserContext);
     const {history, location, match} = useReactRouter();
     const [redirectCounter, setRedirectCounter] = useState(INITIAL_REDIRECT_COUNTER);
+    const [message, setMessage] = useState(null);
     const usernameRef = useRef();
     const passwordRef = useRef();
 
@@ -37,12 +40,12 @@ const Login = () => {
             .then(result => {
                 if (result.status === Status.SUCCESS) {
                     redirect();
-                    // history.push('groceries');
                 } else {
-                    throw new Error(result.status)
+                    throw result.message;
                 }
             })
             .catch(error => {
+                setMessage(error);
                 console.error(error);
             });
     };
@@ -51,23 +54,25 @@ const Login = () => {
         UserApi
             .login(usernameRef.current.value, passwordRef.current.value)
             .then(result => {
-                if (result === Status.SUCCESS) {
+                if (result.status === Status.SUCCESS) {
+                    setUser({username: usernameRef.current.value});
                     history.push('groceries');
                 } else {
-                    throw new Error(result)
+                    throw result.message;
                 }
             })
             .catch(error => {
+                setMessage(error);
                 console.error(error);
             });
     };
 
-    const renderRedirectCounter = () => {
+    const renderMessage = useCallback(() => {
         if (redirectCounter < INITIAL_REDIRECT_COUNTER) {
-            return 'Login in ' + redirectCounter + ' seconds';
+            return 'Login in ' + redirectCounter + ' seconds...';
         }
-        return null;
-    };
+        return message;
+    }, [redirectCounter, message]);
 
     return (
         <div className="login">
@@ -108,7 +113,7 @@ const Login = () => {
                     </Grid>
                 </Grid>
             </Grid>
-            <pre className="redirect-message">{renderRedirectCounter}</pre>
+            <pre className="message">{renderMessage()}</pre>
             <Button
                 variant="contained"
                 className="login-button"
