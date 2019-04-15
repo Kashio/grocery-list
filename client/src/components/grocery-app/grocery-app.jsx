@@ -119,7 +119,7 @@ const GroceryApp = () => {
                     </Grid>
                 </Grid>
                 <Grid container spacing={8} alignItems="flex-end">
-                    <Grid item>
+                    <Grid item xs={12}>
                         <Button
                             variant="contained"
                             className="add-button"
