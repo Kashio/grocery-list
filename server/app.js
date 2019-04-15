@@ -1,18 +1,20 @@
 const express = require('express');
 const protobufParser = require('./middlewares/protobuf-parser');
-const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
 require('./db');
 
 const app = express();
 
-// app.use(bodyParser.raw());
 app.use(protobufParser);
 app.use(cookieParser());
 app.use(cors());
 
 app.use('/user', require('./routes/user'));
+
+const authentication = require('./middlewares/authentication');
+
+app.use('/grocery', authentication, require('./routes/grocery'));
 
 // Catch 404 and forward to error handler
 app.use((req, res, next) => {

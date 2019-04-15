@@ -1,8 +1,9 @@
 syntax = "proto3";
-package grocery.api.response.register;
+package grocery.api.response.login;
 import "../status.proto";
 
-message RegisterResponse {
+message LoginResponse {
     Status status = 1;
     string message = 2;
+    string token = 3;
 }

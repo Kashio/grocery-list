@@ -10,38 +10,58 @@ const User = require('../models/user');
 
 router.use(protobufMessageParser('user'));
 
+let RegisterResponseMessage;
+protobuf.load(path.join(__dirname, '../../protos/grocery/api/response/register.proto'))
+    .then(root => {
+        RegisterResponseMessage = root.lookupType('grocery.api.response.RegisterResponse');
+    })
+    .catch(error => {
+        console.error(error);
+        process.exit(1);
+    });
+
+let LoginResponseMessage;
+protobuf.load(path.join(__dirname, '../../protos/grocery/api/response/login.proto'))
+    .then(root => {
+        LoginResponseMessage = root.lookupType('grocery.api.response.LoginResponse');
+    })
+    .catch(error => {
+        console.error(error);
+        process.exit(1);
+    });
+
 router.post('/register', (req, res) => {
     User.register(req.user)
         .then(result => {
-            protobuf.load(path.join(__dirname, '../../protos/grocery/api/response/register.proto'))
-                .then(root => {
-                    const RegisterResponseMessage = root.lookupType('grocery.api.response.RegisterResponse');
-                    const message = RegisterResponseMessage.create({status: 1});
-                    res.setHeader("Content-Type", "application/octet-stream");
-                    res.write(RegisterResponseMessage.encode(message).finish());
-                    res.end();
-                })
-                .catch(error => {
-                    console.error(error);
-                    process.exit(1);
-                });
-            // res.status(200).json(result);
+            const message = RegisterResponseMessage.create({status: 1});
+            res.setHeader("Content-Type", "application/octet-stream");
+            res.write(RegisterResponseMessage.encode(message).finish());
+            res.end();
         })
         .catch(error => {
-            res.status(500).send(error.message);
+            const message = RegisterResponseMessage.create({status: 2, message: error.message});
+            res.setHeader("Content-Type", "application/octet-stream");
+            res.write(RegisterResponseMessage.encode(message).finish());
+            res.end();
         });
 });
 
 router.post('/login', (req, res) => {
     User.login(req.user)
         .then(result => {
-            const token = jwt.sign(user.username, config.token.secret, {
+            const token = jwt.sign(result.username, config.token.secret, {
                 expiresIn: config.token.expiration
             });
-            res.cookie('token', token, { httpOnly: true }).sendStatus(200);
+            const message = LoginResponseMessage.create({status: 1, token: result});
+            res.setHeader("Content-Type", "application/octet-stream");
+            res.write(LoginResponseMessage.encode(message).finish()).cookie('token', token, { httpOnly: true });
+            res.end();
         })
         .catch(error => {
-            res.status(500).send(error.message);
+            const message = LoginResponseMessage.create({status: 2, message: error.message});
+            res.setHeader("Content-Type", "application/octet-stream");
+            res.write(LoginResponseMessage.encode(message).finish());
+            res.end();
         });
 });
 
