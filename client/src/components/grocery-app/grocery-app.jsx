@@ -5,6 +5,7 @@ import types from '../../actions/groceries';
 import UserContext from '@/app/user.context';
 import GroceryContext from './grocery-app.context';
 import GroceryList from '@/grocery-list/grocery-list';
+import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import GroceryApi from '../../api/grocery';
@@ -62,19 +63,45 @@ const GroceryApp = () => {
 
     return (
         <GroceryContext.Provider value={dispatch}>
-            <GroceryList groceries={filteredGroceries()}/>
-            <Button
-                variant="contained"
-                className="add-button"
-                style={{marginTop: 20}}
-                onClick={add}>
-                Add
-            </Button>
-            <TextField
-                className="add-grocery-name"
-                type="text"
-                label="Grocery name"
-                inputRef={groceryNameRef}/>
+            <Grid container
+                  spacing={8}
+                  align="center"
+                  justify="center"
+                  style={{
+                      backgroundColor: 'rgba(255, 255, 255, 0.75)',
+                      padding: 10,
+                      borderRadius: 5,
+                      width: 300
+                  }}
+                  direction="column">
+                <Grid
+                    container
+                    spacing={8}
+                    className="grocery-list-grid"
+                    alignItems="flex-end">
+                    <Grid item>
+                        <GroceryList groceries={filteredGroceries()}/>
+                    </Grid>
+                </Grid>
+                <Grid container spacing={8} alignItems="flex-end">
+                    <Grid item>
+                        <Button
+                            variant="contained"
+                            className="add-button"
+                            style={{marginTop: 20}}
+                            onClick={add}>
+                            Add
+                        </Button>
+                    </Grid>
+                    <Grid item>
+                        <TextField
+                            className="add-grocery-name"
+                            type="text"
+                            label="Grocery name"
+                            inputRef={groceryNameRef}/>
+                    </Grid>
+                </Grid>
+            </Grid>
         </GroceryContext.Provider>
     );
 };

@@ -31,6 +31,10 @@ GrocerySchema.statics.addGrocery = grocery => {
     return Grocery.create({_id: uuidv4(), ...grocery});
 };
 
+GrocerySchema.statics.deleteGrocery = grocery => {
+    return Grocery.remove({_id: grocery._id});
+};
+
 const Grocery = connection.model('Grocery', GrocerySchema);
 
 module.exports = Grocery;

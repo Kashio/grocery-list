@@ -1,0 +1,7 @@
+.delete-grocery-button {
+  &:hover {
+    color: rgba(0, 0, 0, 0.5);
+  }
+  color: black;
+  transition: color 0.25s ease-in;
+}

@@ -1,0 +1,10 @@
+syntax = "proto3";
+package grocery.api.response.grocerydelete;
+import "../status.proto";
+import "../../grocery.proto";
+
+message GroceryDeleteResponse {
+    Status status = 1;
+    string message = 2;
+    Grocery grocery = 3;
+}

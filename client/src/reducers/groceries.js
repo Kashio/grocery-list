@@ -18,7 +18,7 @@ export default function reducer(state, action) {
         case types.DELETE:
             return {
                 ...state,
-                items: state.items.filter(grocery => grocery._id !== action.payload.id)
+                items: state.items.filter(grocery => grocery._id !== action.payload._id)
             };
         case types.FILTER:
             return {

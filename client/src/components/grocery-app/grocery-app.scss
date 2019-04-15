@@ -1,0 +1,19 @@
+.grocery-list-grid {
+  overflow-y: auto;
+  height: 200px;
+}
+
+.grocery-list-grid::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  background-color: #F5F5F5;
+}
+
+.grocery-list-grid::-webkit-scrollbar {
+  width: 5px;
+  background-color: #F5F5F5;
+}
+
+.grocery-list-grid::-webkit-scrollbar-thumb {
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
+  background-color: #e25655;
+}
