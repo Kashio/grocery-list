@@ -6,6 +6,7 @@ import UserContext from '@/app/user.context';
 import GroceryContext from './grocery-app.context';
 import GroceryList from '@/grocery-list/grocery-list';
 import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import GroceryApi from '../../api/grocery';
@@ -74,6 +75,7 @@ const GroceryApp = () => {
                       width: 300
                   }}
                   direction="column">
+                <Typography>Hello {user.username}, here are your groceries</Typography>
                 <Grid
                     container
                     spacing={8}

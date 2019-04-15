@@ -50,6 +50,12 @@ const Login = () => {
             });
     };
 
+    const loginOnEnter = event => {
+      if (event.key === 'Enter' && usernameRef.current.value !== '' && passwordRef.current.value !== '') {
+          login();
+      }
+    };
+
     const login = () => {
         UserApi
             .login(usernameRef.current.value, passwordRef.current.value)
@@ -95,6 +101,9 @@ const Login = () => {
                             className="username"
                             type="text"
                             label="Username"
+                            autoFocus
+                            error={message}
+                            onKeyPress={loginOnEnter}
                             required={true}
                             inputRef={usernameRef}/>
                     </Grid>
@@ -108,6 +117,8 @@ const Login = () => {
                             className="password"
                             type="password"
                             label="Password"
+                            error={message}
+                            onKeyPress={loginOnEnter}
                             required={true}
                             inputRef={passwordRef}/>
                     </Grid>

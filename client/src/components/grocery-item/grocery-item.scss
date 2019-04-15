@@ -1,7 +1,9 @@
 .delete-grocery-button {
-  &:hover {
-    color: rgba(0, 0, 0, 0.5);
+  path:first-of-type {
+    &:hover {
+      fill: rgba(0, 0, 0, 0.5);
+    }
+    fill: black;
+    transition: fill 0.2s ease;
   }
-  color: black;
-  transition: color 0.25s ease-in;
 }
