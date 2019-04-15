@@ -67,12 +67,15 @@ const GroceryApp = () => {
         }
     };
 
-    const filter = e => {
-        dispatch({type: types.FILTER, payload: {filter: e.target.value}})
+    // NOTE: I use controlled component TextField to control the value of groceries.filter
+    //       because most of the time other components want to know the filtered value
+    //       so using inputRef with onChange event won't suffice for such future cases
+    const filter = event => {
+        dispatch({type: types.FILTER, payload: {filter: event.target.value}})
     };
 
     const filteredGroceries = () => {
-        return groceries.items.filter(grocery => grocery.name.includes(groceries.filter));
+        return groceries.items.filter(grocery => grocery.name.toLowerCase().includes(groceries.filter.toLowerCase()));
     };
 
     if (redirect) {
@@ -99,6 +102,20 @@ const GroceryApp = () => {
                     alignItems="flex-end">
                     <Grid item>
                         <GroceryList groceries={filteredGroceries()}/>
+                    </Grid>
+                </Grid>
+                <Grid
+                    container
+                    spacing={8}
+                    align="center"
+                    justify="center">
+                    <Grid item>
+                        <TextField
+                            className="filter-grocery-name"
+                            type="text"
+                            label="Filter Grocery name"
+                            value={groceries.filter}
+                            onChange={filter}/>
                     </Grid>
                 </Grid>
                 <Grid container spacing={8} alignItems="flex-end">
