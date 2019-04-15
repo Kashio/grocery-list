@@ -1,0 +1,8 @@
+syntax = "proto3";
+package grocery.api.status;
+
+enum Status {
+    UNKNOWN = 0;
+    SUCCESS = 1;
+    FAILED = 2;
+}

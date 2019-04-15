@@ -1,5 +1,6 @@
 const webpack = require('webpack');
 const path = require('path');
+const CopyPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
@@ -47,10 +48,19 @@ module.exports = {
         ]
     },
     plugins: [
+        new CopyPlugin([
+            {
+                from: path.resolve(__dirname, '../protos'),
+                to: path.resolve(__dirname, 'dist/protos')
+            },
+        ]),
         new HtmlWebpackPlugin({
             template: 'index.html'
         }),
         new webpack.HotModuleReplacementPlugin({}),
+        new webpack.DefinePlugin({
+            API_URL: process.env.NODE_ENV === 'dev' ? "'http://localhost:8080/'" : "'http://localhost:8080/'"
+        }),
         new MiniCssExtractPlugin({
             filename: "[name].css",
             chunkFilename: "[id].css"
@@ -60,8 +70,7 @@ module.exports = {
     context: path.resolve(__dirname, 'src'),
     output: {
         path: path.resolve(__dirname, 'dist'),
-        filename: 'bundle.js',
-        // publicPath: process.env.NODE_ENV === 'development' ? '/' : '/dist'
+        filename: 'bundle.js'
     },
     entry: './index.jsx',
     devServer: {

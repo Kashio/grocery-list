@@ -1,0 +1,7 @@
+syntax = "proto3";
+package grocery.api.response.register;
+import "../status.proto";
+
+message RegisterResponse {
+    Status status = 1;
+}
