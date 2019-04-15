@@ -1,4 +1,4 @@
-import React, {useContext, useReducer, useEffect} from 'react';
+import React, {useContext, useReducer, useRef, useEffect} from 'react';
 import './grocery-app.scss';
 import reducer from '../../reducers/groceries';
 import types from '../../actions/groceries';
@@ -18,6 +18,7 @@ const INITIAL_STATE = {
 const GroceryApp = () => {
     const [user, setUser] = useContext(UserContext);
     const [groceries, dispatch] = useReducer(reducer, INITIAL_STATE);
+    const groceryNameRef = useRef();
 
     useEffect(() => {
         GroceryApi
@@ -26,16 +27,29 @@ const GroceryApp = () => {
                 if (result.status === Status.SUCCESS) {
                     dispatch({type: types.LOAD, payload: {items: result.groceries}});
                 } else {
-                    throw new Error(result.status)
+                    throw result.message
                 }
             })
             .catch(error => {
+                // TODO: use toast to notify on error here
                 console.error(error);
             });
     }, [user.username]);
 
     const add = () => {
-        dispatch({type: types.ADD});
+        GroceryApi
+            .add(groceryNameRef.current.value, user.username)
+            .then(result => {
+                if (result.status === Status.SUCCESS) {
+                    dispatch({type: types.ADD, payload: {grocery: result.grocery}});
+                } else {
+                    throw result.message;
+                }
+            })
+            .catch(error => {
+                // TODO: use toast to notify on error here
+                console.error(error);
+            });
     };
 
     const filter = e => {
@@ -60,8 +74,7 @@ const GroceryApp = () => {
                 className="add-grocery-name"
                 type="text"
                 label="Grocery name"
-                value={groceries.filter}
-                onChange={filter}/>
+                inputRef={groceryNameRef}/>
         </GroceryContext.Provider>
     );
 };

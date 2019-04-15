@@ -27,6 +27,10 @@ GrocerySchema.statics.getUserGroceries = username => {
         });
 };
 
+GrocerySchema.statics.addGrocery = grocery => {
+    return Grocery.create({_id: uuidv4(), ...grocery});
+};
+
 const Grocery = connection.model('Grocery', GrocerySchema);
 
 module.exports = Grocery;

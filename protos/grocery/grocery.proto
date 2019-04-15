@@ -2,7 +2,7 @@ syntax = "proto3";
 package grocery.grocery;
 
 message Grocery {
-    string _id = 1;
-    string name = 2;
-    string username = 3;
+    string name = 1;
+    string username = 2;
+    string _id = 3;
 }

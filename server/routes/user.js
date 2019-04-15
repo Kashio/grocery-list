@@ -11,6 +11,8 @@ const User = require('../models/user');
 router.use(protobufMessageParser('user'));
 
 let RegisterResponseMessage;
+let LoginResponseMessage;
+
 protobuf.load(path.join(__dirname, '../../protos/grocery/api/response/register.proto'))
     .then(root => {
         RegisterResponseMessage = root.lookupType('grocery.api.response.RegisterResponse');
@@ -19,8 +21,6 @@ protobuf.load(path.join(__dirname, '../../protos/grocery/api/response/register.p
         console.error(error);
         process.exit(1);
     });
-
-let LoginResponseMessage;
 protobuf.load(path.join(__dirname, '../../protos/grocery/api/response/login.proto'))
     .then(root => {
         LoginResponseMessage = root.lookupType('grocery.api.response.LoginResponse');
